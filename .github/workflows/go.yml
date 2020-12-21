@@ -1,0 +1,56 @@
+
+name: Go
+on:
+  pull_request:
+    paths:
+      - go.mod
+      - '**.go'
+      - .github/workflows/go.yml
+  push:
+    branches:
+      - main
+    paths:
+      - go.mod
+      - '**.go'
+      - .github/workflows/go.yml
+
+jobs:
+  check:
+    name: Go Checks
+    runs-on: ubuntu-latest
+    steps:
+    - name: Check out code
+      uses: actions/checkout@v2
+
+    - name: golangci-lint
+      uses: golangci/golangci-lint-action@v2.5.2
+      with:
+        version: v1.29
+        args: --timeout 2m0s
+
+  test:
+    name: Go Tests
+    runs-on: ubuntu-latest
+    container:
+      image: golang
+
+    steps:
+    - name: Check out code
+      uses: actions/checkout@v2
+
+    - name: Run tests
+      run: go test -mod=readonly -v ./... -race -cover -tags=integration -covermode=atomic -coverprofile=coverage.txt
+
+    - name: Install gcov2lcov
+      env:
+        GO111MODULE: off
+      run: go get -u github.com/jandelgado/gcov2lcov
+
+    - name: Convert coverage.txt to coverage.xml
+      run: gcov2lcov -infile=coverage.txt -outfile=coverage.lcov
+
+    - name: Coveralls
+      uses: coverallsapp/github-action@v1.1.2
+      with:
+        github-token: ${{ secrets.GITHUB_TOKEN }}
+        path-to-lcov: ./coverage.lcov
