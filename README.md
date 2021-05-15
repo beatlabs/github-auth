@@ -79,10 +79,10 @@ To authenticate as an Installation:
 install, err := app.InstallationConfig(id)
 
 // Or from scratch by providing the App ID, the private key and Installation ID
-import "github.com/beatlabs/github-auth/app/installation"
+import "github.com/beatlabs/github-auth/app/inst"
 ...
 
-install, err := installation.NewConfig(appID, installationID, key)
+install, err := inst.NewConfig(appID, installationID, key)
 
 // Get an *http.Client
 client = install.Client(ctx)
