@@ -20,7 +20,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - name: Check out code
-      uses: actions/checkout@v2
+      uses: actions/checkout@v3
 
     - name: golangci-lint
       uses: golangci/golangci-lint-action@v3.1.0
@@ -36,7 +36,7 @@ jobs:
 
     steps:
     - name: Check out code
-      uses: actions/checkout@v2
+      uses: actions/checkout@v3
 
     - name: Run tests
       run: go test -mod=readonly -v ./... -race -cover -tags=integration -covermode=atomic -coverprofile=coverage.txt
