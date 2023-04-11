@@ -55,7 +55,7 @@ jobs:
       run: gcov2lcov -infile=coverage.txt -outfile=coverage.lcov
 
     - name: Coveralls
-      uses: coverallsapp/github-action@1.1.3
+      uses: coverallsapp/github-action@v2.1.0
       with:
         github-token: ${{ secrets.GITHUB_TOKEN }}
         path-to-lcov: ./coverage.lcov
