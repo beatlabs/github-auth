@@ -19,6 +19,11 @@ jobs:
     name: Go Checks
     runs-on: ubuntu-latest
     steps:
+    - uses: actions/setup-go@v4
+      with:
+        go-version: '1.17'
+        cache: false
+
     - name: Check out code
       uses: actions/checkout@v3
 
