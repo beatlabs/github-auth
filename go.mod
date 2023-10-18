@@ -2,7 +2,7 @@ module github.com/beatlabs/github-auth
 
 go 1.20
 
-require golang.org/x/oauth2 v0.12.0
+require golang.org/x/oauth2 v0.13.0
 
 require (
 	github.com/golang/protobuf v1.5.3 // indirect
