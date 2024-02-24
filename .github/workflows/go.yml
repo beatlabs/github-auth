@@ -19,37 +19,34 @@ jobs:
     name: Go Checks
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/setup-go@v5
-      with:
-        go-version: '1.17'
-        cache: false
-
     - name: Check out code
       uses: actions/checkout@v4
 
-    - name: golangci-lint
-      uses: golangci/golangci-lint-action@v3.7.0
+    - uses: actions/setup-go@v5
       with:
-        version: v1.29
-        args: --timeout 2m0s
+        go-version-file: 'go.mod'
+
+    - name: golangci-lint
+      uses: golangci/golangci-lint-action@v4
+      with:
+        version: v1.56
 
   test:
     name: Go Tests
     runs-on: ubuntu-latest
-    container:
-      image: golang
-
     steps:
     - name: Check out code
       uses: actions/checkout@v4
+
+    - uses: actions/setup-go@v5
+      with:
+        go-version-file: 'go.mod'
 
     - name: Run tests
       run: go test -mod=readonly -v ./... -race -cover -tags=integration -covermode=atomic -coverprofile=coverage.txt
 
     - name: Install gcov2lcov
-      env:
-        GO111MODULE: off
-      run: go get -u github.com/jandelgado/gcov2lcov
+      run: go install github.com/jandelgado/gcov2lcov@latest
 
     - name: Convert coverage.txt to coverage.xml
       run: gcov2lcov -infile=coverage.txt -outfile=coverage.lcov
